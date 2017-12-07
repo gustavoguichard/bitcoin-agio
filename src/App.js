@@ -20,6 +20,19 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.updatePrices()
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.updatePrices.bind(this), 30000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+    this.interval = null
+  }
+
+  updatePrices() {
     this.fetchCoindesk()
     this.fetchMercado()
   }
@@ -45,11 +58,16 @@ class App extends Component {
       })
   }
 
+  get dollar() {
+    return this.state.coindeskBR / this.state.coindesk
+  }
+
   get prices() {
     const format = '0,0.00'
     return {
       coindesk: numeral(this.state.coindesk).format(format),
       mercado: numeral(this.state.mercado).format(format),
+      dollar: numeral(this.dollar).format(format),
     }
   }
 
@@ -59,6 +77,7 @@ class App extends Component {
   }
 
   render() {
+    const year = new Date().getFullYear()
     return (
       <div className="App">
         <header className="App-header">
@@ -70,6 +89,13 @@ class App extends Component {
         </p>
         <p className="App-intro">
           Coindesk: U$ {this.prices.coindesk}
+        </p>
+        <p className="App-intro">
+          Dollar: R$ {this.prices.dollar}
+        </p>
+
+        <p>
+          &copy; {year} - Gustavo Guichard
         </p>
       </div>
     );
