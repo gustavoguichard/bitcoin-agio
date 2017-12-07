@@ -66,6 +66,7 @@ class App extends Component {
     const format = '0,0.00'
     return {
       coindesk: numeral(this.state.coindesk).format(format),
+      coindeskBR: numeral(this.state.coindeskBR).format(format),
       mercado: numeral(this.state.mercado).format(format),
       dollar: numeral(this.dollar).format(format),
     }
@@ -88,7 +89,7 @@ class App extends Component {
           MercadoBitcoin: R$ {this.prices.mercado}
         </p>
         <p className="App-intro">
-          Coindesk: U$ {this.prices.coindesk}
+          Coindesk: U$ {this.prices.coindesk} (R$ {this.prices.coindeskBR})
         </p>
         <p className="App-intro">
           Dollar: R$ {this.prices.dollar}
