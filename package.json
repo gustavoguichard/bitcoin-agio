@@ -1,0 +1,20 @@
+{
+  "name": "bitcoin",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.1",
+    "numeral": "^2.0.6",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build && mv ./build/index.html ./build/200.html",
+    "deploy": "surge ./build bitcoin-agio.surge.sh",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
