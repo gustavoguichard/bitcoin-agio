@@ -16,6 +16,7 @@ class App extends Component {
   state = {
     coindesk: 0,
     coindeskBR: 0,
+    bitcoinTrade: 0,
     mercado: 0,
   }
 
@@ -35,6 +36,7 @@ class App extends Component {
   updatePrices() {
     this.fetchCoindesk()
     this.fetchMercado()
+    this.fetchBitcointrade()
   }
 
   fetchCoindesk() {
@@ -58,6 +60,16 @@ class App extends Component {
       })
   }
 
+  fetchBitcointrade() {
+    axios.get('https://api.bitcointrade.com.br/v1/public/BTC/ticker/')
+      .then(({ data }) => {
+        const { last } = data.data
+        if(last) {
+          this.setState({ bitcoinTrade: last })
+        }
+      })
+  }
+
   get dollar() {
     return this.state.coindeskBR / this.state.coindesk
   }
@@ -68,12 +80,13 @@ class App extends Component {
       coindesk: numeral(this.state.coindesk).format(format),
       coindeskBR: numeral(this.state.coindeskBR).format(format),
       mercado: numeral(this.state.mercado).format(format),
+      bitcoinTrade: numeral(this.state.bitcoinTrade).format(format),
       dollar: numeral(this.dollar).format(format),
     }
   }
 
-  get agio() {
-    const total = ((this.state.mercado * 100) / this.state.coindeskBR) - 100
+  getAgio(price) {
+    const total = ((price * 100) / this.state.coindeskBR) - 100
     return numeral(total).format('0.0')
   }
 
@@ -83,11 +96,9 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Bitcoin Ágio: {this.agio}%</h1>
+          <h1 className="App-title">MercadoBitcoin: R$ {this.prices.mercado} - {this.getAgio(this.state.mercado)}%</h1>
+          <h1 className="App-title">BitcoinTrade: R$ {this.prices.bitcoinTrade} - {this.getAgio(this.state.bitcoinTrade)}%</h1>
         </header>
-        <p className="App-intro">
-          MercadoBitcoin: R$ {this.prices.mercado}
-        </p>
         <p className="App-intro">
           Coindesk: U$ {this.prices.coindesk} (R$ {this.prices.coindeskBR})
         </p>
