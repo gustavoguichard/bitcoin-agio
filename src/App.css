@@ -9,9 +9,19 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px 20px 50px;
+  padding: 2rem;
   color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 50px;
+  margin-right: 1rem;
 }
 
 .App-title {
